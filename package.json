@@ -1,0 +1,19 @@
+{
+  "name": "devtinder",
+  "version": "1.0.0",
+  "description": "app for developers",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "javascript",
+    "node",
+    "js"
+  ],
+  "author": "shubham Y",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
