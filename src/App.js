@@ -2,16 +2,35 @@ const express = require("express");
 
 const app = express();
 
-app.use("/test", (req, res, next) => {
-  console.log("first get");
-  //res.send("first response");
-  next();
-});
 
-app.get("/test", (req, res, next) => {
-  console.log("second get");
-  res.send("second response");
-});
+app.use('/', (err , req ,res ,next, )=> {
+  if(err){
+    res.status(500).send('page is not found');
+  }
+})
+
+app.get('/getUserData' , (req , res)=>{
+  try{
+  throw new error('ddfvfbbn');
+  res.send('user data sent');
+}
+ catch(err){
+   res.status(500).send('page is ........');
+ }
+} )
+
+
+
+// app.use("/test", (req, res, next) => {
+//   console.log("first get");
+//   //res.send("first response");
+//   next();
+// });
+
+// app.get("/test", (req, res, next) => {
+//   console.log("second get");
+//   res.send("second response");
+// });
 
 // app.use('/test' , (req, res , next)=> {
 //     console.log('response for the test page');
