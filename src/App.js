@@ -1,25 +1,43 @@
 const express = require("express");
-
+const connectDB = require("./config/database");
+const User = require("./models/user");
 const app = express();
 
+app.post("/signup", async(req, res) => {
+  const user = new User ({
+    firstName: "virat",
+    lastName: "kohli",
+  });
+  await user.save();
+  res.send("user added successfully");
+});
 
-app.use('/', (err , req ,res ,next, )=> {
-  if(err){
-    res.status(500).send('page is not found');
-  }
-})
+connectDB()
+  .then(() => {
+    console.log("database connection established...");
+    app.listen(4000, () => {
+      console.log("server started on port 4000");
+    });
+  })
+  .catch((err) => {
+    console.error("database cannot be connected...");
+  });
 
-app.get('/getUserData' , (req , res)=>{
-  try{
-  throw new error('ddfvfbbn');
-  res.send('user data sent');
-}
- catch(err){
-   res.status(500).send('page is ........');
- }
-} )
+// app.use('/', (err , req ,res ,next, )=> {
+//   if(err){
+//     res.status(500).send('page is not found');
+//   }
+// })
 
-
+// app.get('/getUserData' , (req , res)=>{
+//   try{
+//   throw new error('ddfvfbbn');
+//   res.send('user data sent');
+// }
+//  catch(err){
+//    res.status(500).send('page is ........');
+//  }
+// } )
 
 // app.use("/test", (req, res, next) => {
 //   console.log("first get");
@@ -34,7 +52,7 @@ app.get('/getUserData' , (req , res)=>{
 
 // app.use('/test' , (req, res , next)=> {
 //     console.log('response for the test page');
-     
+
 //     //res.send('response 1');
 //      next();
 
@@ -80,7 +98,3 @@ app.get('/getUserData' , (req , res)=>{
 // app.use( '/',(req, res)=>{
 //     res.send('Hello form the server');
 // });
-
-app.listen(4000, () => {
-  console.log("server started on port 4000");
-});
