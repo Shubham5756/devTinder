@@ -1,17 +1,52 @@
 const express = require("express");
 const connectDB = require("./config/database");
 const User = require("./models/user");
+const { validateSignUpData } = require("./utils/validation");
+const cookieParser = require("cookie-parser");
+var jwt = require("jsonwebtoken");
+const { userAuth } = require("./middlewares/auth");
+
 const app = express();
-
-
+const bcrypt = require("bcrypt");
 app.use(express.json());
-app.post("/signup", async(req, res) => {
-console.log(req);
+app.use(cookieParser());
+
+const authRouter = require("./routes/auth");
+const profileRouter = require("./routes/profile");
+const requestRouter = require("./routes/request");
+
+app.use("/", authRouter);
+app.use("/", profileRouter);
+app.use("/", requestRouter);
 
 
-  // const user = new User (req.body);
-  // await user.save();
-    res.send("user added successfully");
+app.delete("/signup", async (req, res) => {
+  const userId = req.body.id;
+  try {
+    const id = await User.findByIdAndDelete(userId);
+    res.send(id);
+  } catch (err) {
+    res.status(400).send("something went wrong");
+  }
+});
+
+app.patch("/signup", async (req, res) => {
+  const userId = req.body.id;
+  const data = req.body;
+  try {
+    const ALLOWED_UPDATES = ["PHOTOuRL", "about", "gender", "age", "skills"];
+    const isUpdateAllowed = Object.keys(data).every((k) =>
+      ALLOWED_UPDATES.includes(k),
+    );
+    if (!isUpdateAllowed) {
+      throw new Error("update not allowed");
+    }
+    const result = await User.findByIdAndUpdate(userId, data);
+    // consol.log(result)
+    res.send(result);
+  } catch (err) {
+    res.status(400).send("something went wrong");
+  }
 });
 
 connectDB()
